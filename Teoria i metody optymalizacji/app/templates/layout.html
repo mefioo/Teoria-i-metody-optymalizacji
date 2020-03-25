@@ -11,7 +11,7 @@
 
          <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/tmp5.css') }}">
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/tmp14.css') }}">
         <link href="https://fonts.googleapis.com/css?family=Livvic:400,700&display=swap&subset=latin-ext" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
@@ -40,7 +40,26 @@
             </div>
           </div>
         </nav>
+            <div class="row mr-0" style="height: 40px;">
+                <div class="col-xl-4 col-lg-3 col-md-2 col-sm-1">
 
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-8 col-sm-10 bg h-auto error-messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{category}} text-center mt-2 ml-2 mr-2">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="col-xl-4 col-lg-3 col-md-2 col-sm-1 pr-0">
+
+                </div>
+
+            </div>
 
 
 <!-- Page Content -->
