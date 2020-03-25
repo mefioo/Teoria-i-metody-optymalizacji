@@ -13,6 +13,5 @@ def main():
     if form.validate_on_submit():
         flash('Pomyślnie wykonano obliczenia!', 'success')
         return redirect(url_for('main'))
-    else:
-        flash('Nie wykonano obliczeń')
+
     return render_template('main.html', form=form, title='Strona główna projektu')
