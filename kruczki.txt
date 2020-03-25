@@ -1,0 +1,3 @@
+sin ^4 (x)
+nawiasy kwadratowe
+e, pi jako punkt startowy
