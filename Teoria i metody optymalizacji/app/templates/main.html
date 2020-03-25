@@ -9,5 +9,90 @@
     </li>
 {% endblock navigation %}
 {% block content %}
+<div class="row mr-0 content-wrap">
+    <div class="col-xl-3 col-sm-1">
 
+    </div>
+    <div class="container col-xl-6 col-sm-10 bg">
+        <div class="form p-2" style="height: auto;">
+        <div class="account ml-3 mr-3">
+            <div class="content-section">
+                <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend class="text-center border-bottom mt-10 mb-10">Wylicz minimum</legend>
+                        <div class="form-group">
+                            {{ form.gradient_accuracy.label(class="form-control-label ml-2") }}
+
+                            {% if form.gradient_accuracy.errors %}
+                                {{ form.gradient_accuracy(class="form-control form-control-lg is-invalid") }}
+                            {% else %}
+                                {{ form.gradient_accuracy(class="form-control form-control-lg", placeholder="") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.x_accuracy.label(class="form-control-label ml-2") }}
+
+                            {% if form.x_accuracy.errors %}
+                                {{ form.x_accuracy(class="form-control form-control-lg is-invalid") }}
+                            {% else %}
+                                {{ form.x_accuracy(class="form-control form-control-lg", placeholder="") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.function_accuracy.label(class="form-control-label ml-2") }}
+
+                            {% if form.function_accuracy.errors %}
+                                {{ form.function_accuracy(class="form-control form-control-lg is-invalid") }}
+                            {% else %}
+                                {{ form.function_accuracy(class="form-control form-control-lg", placeholder="") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.number_of_iterations.label(class="form-control-label ml-2") }}
+
+                            {% if form.number_of_iterations.errors %}
+                                {{ form.number_of_iterations(class="form-control form-control-lg is-invalid") }}
+                            {% else %}
+                                {{ form.number_of_iterations(class="form-control form-control-lg", placeholder="") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.function_.label(class="form-control-label ml-2") }}
+
+                            {% if form.function_.errors %}
+                                {{ form.function_(class="form-control form-control-lg is-invalid") }}
+                            {% else %}
+                                {{ form.function_(class="form-control form-control-lg", placeholder="") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.point.label(class="form-control-label ml-2") }}
+
+                            {% if form.point.errors %}
+                                {{ form.point(class="form-control form-control-lg is-invalid") }}
+                            {% else %}
+                                {{ form.point(class="form-control form-control-lg", placeholder="") }}
+                            {% endif %}
+                        </div>
+
+
+
+                    </fieldset>
+                    <div class="form-group text-center mt-2 mb-1">
+                        {{ form.calculate(class="btn") }}
+                    </div>
+                    <div class="text-muted text-right">
+                        <small>*  pola wymagane</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="col-xl-3 col-sm-1">
+
+    </div>
+
+</div>
 {% endblock content %}
