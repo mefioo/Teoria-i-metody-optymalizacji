@@ -18,10 +18,14 @@ def main():
             data["function_accuracy"] = form.function_accuracy.data
             data["number_of_iterations"] = form.number_of_iterations.data
             data["equation"] = form.equation.data
-            data["point"] = form.point.data.split(" ")
+            form.point.data = list(form.point.data.split(" "))
+            numbers = []
+            for str in form.point.data:
+                numbers.append(float(str))
+            data["point"] = numbers
             data["min_factor"] = form.min_factor.data
 
-            algorithm = Steepest_descent(form.equation.data,)
+            algorithm = Steepest_descent(form.equation.data, [-1, 25])
             data["parsed_equation"] = algorithm.function
             data["parsed_point"] = algorithm.point
             data["gradient"] = algorithm.grad
@@ -40,4 +44,26 @@ def main():
 
 @app.route('/result')
 def result():
-    return render_template('result.html', data=data, title='Wynik')
+    table_data = []
+    item = ['Dokładność gradientu', data["gradient_accuracy"]]
+    table_data.append(item)
+    item = ['Dokładność x', data["x_accuracy"]]
+    table_data.append(item)
+    item = ['Dokładność funkcji', data["function_accuracy"]]
+    table_data.append(item)
+    item = ['Liczba iteracji', data["number_of_iterations"]]
+    table_data.append(item)
+    item = ['Funkcja', data["equation"]]
+    table_data.append(item)
+    item = ['Parametr dla metody minimum', data["min_factor"]]
+    table_data.append(item)
+    point = ""
+    for num in data["point"]:
+        point = point+str(num)+", "
+    point = point[0:-2]
+    item = ['Punkt startowy', point]
+    table_data.append(item)
+    item = ['Minimum znalezione przez algorytm', data["minimum"]]
+    table_data.append(item)
+
+    return render_template('result.html', table_data=table_data, title='Wynik')

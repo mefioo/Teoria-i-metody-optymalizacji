@@ -10,16 +10,28 @@
 {% endblock navigation %}
 {% block content %}
 <div class="row mr-0 content-wrap">
-    <div class="col-xl-1 col-sm-1">
+    <div class="container col-xl-5 col-sm-5 bg">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                  <th scope="col">Nazwa</th>
+                  <th scope="col">Wartość</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in table_data %}
+                    <tr>
+                        <th scope="row">{{ item[0] }}</th>
+                        <td>{{ item[1] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xl-2 col-sm-2">
 
     </div>
-    <div class="container col-xl-5 col-sm-10 bg">
-
-    </div>
-    <div class="container col-xl-5 col-sm-10 bg">
-
-    </div>
-    <div class="col-xl-1 col-sm-1">
+    <div class="container col-xl-5 col-sm-5 bg">
 
     </div>
 
