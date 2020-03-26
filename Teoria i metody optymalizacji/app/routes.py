@@ -27,8 +27,9 @@ def main():
             data["gradient"] = algorithm.grad
             data["value_in_point"] = algorithm.calculate_function_value_in_point(algorithm.function, algorithm.point)
             data["minimum"] = algorithm.find_minimum()
-            #algorithm.generate_plot(6)
 
+            #algorithm.generate_plot
+            
             flash('Pomyślnie wykonano obliczenia!', 'success')
             return redirect(url_for('result'))
         except Exception as e:

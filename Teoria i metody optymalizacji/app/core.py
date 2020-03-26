@@ -51,10 +51,11 @@ class Steepest_descent():
         self.path_y = [self.point[-1]]
         self.path_z = [np.float(self.calculate_function_value_in_point(self.function, self.point))]
 
-        self.function_accuracy = function_accuracy
-        self.x_accuracy = x_accuracy
-        self.gradient_accuracy = gradient_accuracy
-        self.max_iter = number_of_iterations
+        self.function_accuracy = float(function_accuracy)
+        self.x_accuracy = float(x_accuracy)
+        self.gradient_accuracy = float(gradient_accuracy)
+        self.max_iter = int(number_of_iterations)
+
     def parse_equation(self, equation):
         """
         :param equation: equation from string input, to be converted
@@ -133,10 +134,4 @@ class Steepest_descent():
             print("This is not 3D object to plot")
 
 
-a = Steepest_descent(FUNCTION_STRINGS[0], POINTS[0])
-print(a.function)
-print(a.point)
-print(a.grad)
-print(a.calculate_function_value_in_point(a.function, a.point))
-print(a.find_minimum())
-a.generate_plot(6)
+#a.generate_plot(6)
