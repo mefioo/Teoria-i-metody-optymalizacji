@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block brand %}
+    <a href="/" class="navbar-brand mr-2" style="font-size: 50px;"><img src="{{ url_for('static', filename='images/algorithm.png') }}" width="110" height="110"></a>
+{% endblock brand %}
+
+{% block navigation %}
+    <li class="nav-item">
+        <a class="nav-link" href="#">O projekcie</a>
+    </li>
+{% endblock navigation %}
+{% block content %}
+<div class="row mr-0 content-wrap">
+    <div class="col-xl-1 col-sm-1">
+
+    </div>
+    <div class="container col-xl-5 col-sm-10 bg">
+
+    </div>
+    <div class="container col-xl-5 col-sm-10 bg">
+
+    </div>
+    <div class="col-xl-1 col-sm-1">
+
+    </div>
+
+</div>
+{% endblock content %}
