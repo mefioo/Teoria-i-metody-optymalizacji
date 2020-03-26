@@ -129,9 +129,11 @@ class Steepest_descent():
                     My_Z[i, j] = self.calculate_function_value_in_point(self.function, [My_X[i, j], My_Y[i][0]])
             ax.plot_wireframe(My_X, My_Y, My_Z)
             ax.plot3D(np.array(self.path_x), np.array(self.path_y), np.array(self.path_z), c='r', marker='o')
-            plt.show()
+            plt.savefig('app/plot.png')
+            #plt.show()
         else:
             print("This is not 3D object to plot")
 
 
+#a = Steepest_descent(FUNCTION_STRINGS[0], POINTS[0])
 #a.generate_plot(6)

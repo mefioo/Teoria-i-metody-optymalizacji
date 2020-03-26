@@ -25,14 +25,14 @@ def main():
             data["point"] = numbers
             data["min_factor"] = form.min_factor.data
 
-            algorithm = Steepest_descent(form.equation.data, [-1, 25])
+            algorithm = Steepest_descent(form.equation.data, data["point"])
             data["parsed_equation"] = algorithm.function
             data["parsed_point"] = algorithm.point
             data["gradient"] = algorithm.grad
             data["value_in_point"] = algorithm.calculate_function_value_in_point(algorithm.function, algorithm.point)
             data["minimum"] = algorithm.find_minimum()
 
-            #algorithm.generate_plot
+            plot = algorithm.generate_plot(6)
             
             flash('Pomyślnie wykonano obliczenia!', 'success')
             return redirect(url_for('result'))
