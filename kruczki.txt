@@ -1,3 +1,6 @@
 sin ^4 (x)
 nawiasy kwadratowe
 e, pi jako punkt startowy
+wykres interaktywny?
+kroki algorytmu -> lista punktów?
+interpretacja zmiennych "x","X_1"? jak?

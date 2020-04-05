@@ -118,8 +118,8 @@ class Steepest_descent():
             direction_magnitude = self.get_vector_length(direction)
             inf_loop_guardian=inf_loop_guardian+1
         print(direction_magnitude)
-        return self.point
-
+        return float(self.point)
+    
     def generate_plot(self, plot_size=6):
         if len(self.point) == 2:
             My_X, My_Y = np.meshgrid(range(10 * plot_size), range(10 * plot_size))
