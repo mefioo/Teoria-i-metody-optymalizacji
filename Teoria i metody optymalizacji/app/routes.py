@@ -32,7 +32,7 @@ def main():
             data["value_in_point"] = algorithm.calculate_function_value_in_point(algorithm.function, algorithm.point)
             data["minimum"] = algorithm.find_minimum()
 
-            plot = algorithm.generate_plot(6)
+            data["plot"] = algorithm.generate_plot(6)
             
             flash('Pomyślnie wykonano obliczenia!', 'success')
             return redirect(url_for('result'))
@@ -66,4 +66,7 @@ def result():
     item = ['Minimum znalezione przez algorytm', data["minimum"]]
     table_data.append(item)
 
-    return render_template('result.html', table_data=table_data, title='Wynik')
+    img = data["plot"]
+
+    return render_template('result.html', table_data=table_data, img=img, title='Wynik')
+

@@ -6,7 +6,10 @@ import numpy as np
 from math import pi, e, sqrt
 import random
 from mpl_toolkits import mplot3d
-import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
+from matplotlib.figure import Figure
+from mpl_toolkits.mplot3d import Axes3D
 
 X_1, X_2, X_3, X_4, X_5, X_6 = sym.symbols('X_1 X_2 X_3 X_4 X_5 X_6')
 Pi = sym.symbols('Pi')
@@ -119,7 +122,6 @@ class Steepest_descent():
 
     def generate_plot(self, plot_size=6):
         if len(self.point) == 2:
-            ax = plt.axes(projection='3d')
             My_X, My_Y = np.meshgrid(range(10 * plot_size), range(10 * plot_size))
             My_X = (My_X - 5 * plot_size) / 5
             My_Y = (My_Y - 5 * plot_size) / 5
@@ -127,9 +129,19 @@ class Steepest_descent():
             for i in range(10 * plot_size):
                 for j in range(10 * plot_size):
                     My_Z[i, j] = self.calculate_function_value_in_point(self.function, [My_X[i, j], My_Y[i][0]])
+
+            fig = Figure()
+            ax = Axes3D(fig)
             ax.plot_wireframe(My_X, My_Y, My_Z)
             ax.plot3D(np.array(self.path_x), np.array(self.path_y), np.array(self.path_z), c='r', marker='o')
-            plt.savefig('app/plot.png')
+            #ax.scatter(np.array(self.path_x), np.array(self.path_y), np.array(self.path_z), c='r', marker='o')
+            # Save it to a temporary buffer.
+            buf = BytesIO()
+            fig.savefig(buf, format="png")
+
+            img = base64.b64encode(buf.getbuffer()).decode("ascii")
+            return img
+            #return plt
             #plt.show()
         else:
             print("This is not 3D object to plot")
