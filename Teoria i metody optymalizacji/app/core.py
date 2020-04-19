@@ -10,16 +10,19 @@ import base64
 from io import BytesIO
 from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from mpl_toolkits.mplot3d import axes3d
 
-X_1, X_2, X_3, X_4, X_5, X_6 = sym.symbols('X_1 X_2 X_3 X_4 X_5 X_6')
+x1, x2, x3, x4, x5, x6 = sym.symbols('x1 x2 x3 x4 x5 x6')
 Pi = sym.symbols('Pi')
-x_vector = [X_1, X_2, X_3, X_4, X_5, X_6]
-FUNCTION_STRINGS = ["X_1**4+X_2**4-0.62*X_2**2-0.62*X_1**2", #suggested functions
-                "100*(X_2-X_1**2)**2+(1-X_1)**2",
-              "(X_1-X_2+X_3)**2 + (-X_1+X_2+X_3)**2+(X_1+X_2-X_3)**2",
-              "(1+(X_1+X_2+1)**2*(19-14*X_1+3*X_1**2-14*X_2+6*X_1*X_2+3*X_2**2))*(30+(2*X_1-3*X_2)**2*(18-32*X_1+12*X_1**2+48*X_2-36*X_1*X_2+27*X_2**2))",
-               "Exp[-21*Log[2]*(X_1-0.08)**2/(0.854**2)]*Sin[5*Pi*(X_1**(3/4)-0.05)]",
-              "(X_1**2+X_2-11)**2+(X_1+X_2**2-7)**2-200"]
+x_vector = [x1, x2, x3, x4, x5, x6]
+FUNCTION_STRINGS = ["x1**4+x2**4-0.62*x2**2-0.62*x1**2", #suggested functions
+                "100*(x2-x1**2)**2+(1-x1)**2",
+              "(x1-x2+x3)**2 + (-x1+x2+x3)**2+(x1+x2-x3)**2",
+              "(1+(x1+x2+1)**2*(19-14*x1+3*x1**2-14*x2+6*x1*x2+3*x2**2))*(30+(2*x1-3*x2)**2*(18-32*x1+12*x1**2+48*x2-36*x1*x2+27*x2**2))",
+               "Exp[-21*Log[2]*(x1-0.08)**2/(0.854**2)]*Sin[5*Pi*(x1**(3/4)-0.05)]",
+              "(x1**2+x2-11)**2+(x1+x2**2-7)**2-200"]
 
 POINTS = [[1, 1], #suggested started points
           [-1.2, 1.0],
@@ -118,7 +121,7 @@ class Steepest_descent():
             direction_magnitude = self.get_vector_length(direction)
             inf_loop_guardian=inf_loop_guardian+1
         print(direction_magnitude)
-        return float(self.point)
+        return self.point
     
     def generate_plot(self, plot_size=6):
         if len(self.point) == 2:
@@ -132,14 +135,46 @@ class Steepest_descent():
 
             fig = Figure()
             ax = Axes3D(fig)
-            ax.plot_wireframe(My_X, My_Y, My_Z)
+
+            # 1stplot
+
+            X, Y, Z = My_X, My_Y, My_Z
+            ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
             ax.plot3D(np.array(self.path_x), np.array(self.path_y), np.array(self.path_z), c='r', marker='o')
-            #ax.scatter(np.array(self.path_x), np.array(self.path_y), np.array(self.path_z), c='r', marker='o')
-            # Save it to a temporary buffer.
+            cset = ax.contour(X, Y, Z, zdir='z', offset=-100, cmap=cm.coolwarm)
+            cset = ax.contour(X, Y, Z, zdir='x', offset=-40, cmap=cm.coolwarm)
+            cset = ax.contour(X, Y, Z, zdir='y', offset=40, cmap=cm.coolwarm)
+
             buf = BytesIO()
             fig.savefig(buf, format="png")
+            img1 = base64.b64encode(buf.getbuffer()).decode("ascii")
 
-            img = base64.b64encode(buf.getbuffer()).decode("ascii")
+            # 2nd plot
+
+            ax.view_init(azim=-90, elev=90)
+
+            buf = BytesIO()
+            fig.savefig(buf, format="png")
+            img2 = base64.b64encode(buf.getbuffer()).decode("ascii")
+
+            # 3rd plot
+            surf = ax.plot_surface(My_X, My_Y, My_Z, rstride=1, cstride=1, cmap=cm.coolwarm,
+                                   linewidth=0, antialiased=False)
+            ax.plot(np.array(self.path_x), np.array(self.path_y), np.array(self.path_z), 'ro', alpha=0.5)
+            ax.zaxis.set_major_locator(LinearLocator(10))
+            ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+            fig.colorbar(surf, shrink=0.5, aspect=5)
+            ax.view_init(azim=None, elev=None)
+
+            buf = BytesIO()
+            fig.savefig(buf, format="png")
+            img3 = base64.b64encode(buf.getbuffer()).decode("ascii")
+
+
+
+
+            img = [img1, img2, img3]
+
             return img
             #return plt
             #plt.show()

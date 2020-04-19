@@ -27,13 +27,25 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="text-center">
+            <a class="btn" href="javascript:history.back()" role="button">Edytuj poprzednie wartości</a>
+        </div>
     </div>
     <div class="col-xl-2 col-sm-2">
 
     </div>
     <div class="container col-xl-5 col-sm-5 bg">
-        <img src='data:image/png;base64,{{ img }}'/>
+        <div>
+            <img src='data:image/png;base64,{{ img1 }}'/>
+        </div>
+        <div class="pt-5">
+            <img src='data:image/png;base64,{{ img2 }}'/>
+        </div>
+        <div class="pt-5">
+            <img src='data:image/png;base64,{{ img3 }}'/>
+        </div>
     </div>
+
 
 </div>
 {% endblock content %}

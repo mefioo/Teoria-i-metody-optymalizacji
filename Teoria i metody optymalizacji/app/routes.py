@@ -32,7 +32,10 @@ def main():
             data["value_in_point"] = algorithm.calculate_function_value_in_point(algorithm.function, algorithm.point)
             data["minimum"] = algorithm.find_minimum()
 
-            data["plot"] = algorithm.generate_plot(6)
+            plots = algorithm.generate_plot(6)
+            data["plot1"] = plots[0]
+            data["plot2"] = plots[1]
+            data["plot3"] = plots[2]
             
             flash('Pomyślnie wykonano obliczenia!', 'success')
             return redirect(url_for('result'))
@@ -57,16 +60,27 @@ def result():
     table_data.append(item)
     item = ['Parametr dla metody minimum', data["min_factor"]]
     table_data.append(item)
+
+    ### Setting minimum accuracy
+    acc = len(str(data["x_accuracy"])) - 2
     point = ""
     for num in data["point"]:
         point = point+str(num)+", "
     point = point[0:-2]
     item = ['Punkt startowy', point]
     table_data.append(item)
-    item = ['Minimum znalezione przez algorytm', data["minimum"]]
+    nums = ''
+    for num in data["minimum"]:
+        nums = nums + str(round(num, acc)) + ", " #if
+    nums = nums[0:-2]
+
+
+    item = ['Minimum znalezione przez algorytm', nums]
     table_data.append(item)
 
-    img = data["plot"]
+    img1 = data["plot1"]
+    img2 = data["plot2"]
+    img3 = data["plot3"]
 
-    return render_template('result.html', table_data=table_data, img=img, title='Wynik')
+    return render_template('result.html', table_data=table_data, img1=img1, img2=img2, img3=img3, title='Wynik')
 

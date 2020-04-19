@@ -1,6 +1,7 @@
-sin ^4 (x)
-nawiasy kwadratowe
-e, pi jako punkt startowy
-wykres interaktywny?
-kroki algorytmu -> lista punktów?
-interpretacja zmiennych "x","X_1"? jak?
+sin ^4 (x) x done
+nawiasy kwadratowe v done
+e, pi jako punkt startowy x done
+wykres interaktywny? x done
+kroki algorytmu -> lista punktów? tabela -> punkt+wartosc w punkcie
+interpretacja zmiennych "x","X_1"? jak? x1, x2 .... done
+Czy spełnia kryterium sylwestra?
