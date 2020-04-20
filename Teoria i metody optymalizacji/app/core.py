@@ -27,7 +27,7 @@ FUNCTION_STRINGS = ["x1**4+x2**4-0.62*x2**2-0.62*x1**2", #suggested functions
 POINTS = [[1, 1], #suggested started points
           [-1.2, 1.0],
           [100.0, -1.0, 2.5],
-          [0.4, -0.6],
+          [-0.4, -0.6],
           [random.random()],
           [-5, 5],]
 
@@ -90,13 +90,35 @@ class Steepest_descent():
                 return i
         return self.x_accuracy*2
 
-    def get_best_step_distance(self, direction, p, old_value, lower_bound=0, upper_bound=10, test_param=0.4, test_acc =1e-10):
+    def get_hesjan(self, matrix_size):
+        hesjan = np.zeros((matrix_size, matrix_size))
+        for f, i in zip(self.grad, range(matrix_size)):
+            for symbol, j in zip(x_vector, range(matrix_size)):
+                hesjan[i, j] = self.calculate_function_value_in_point(sym.diff(f, symbol), self.point)
+        return hesjan
+
+    def check_if_in_min(self):
+        matrix_size = len(self.grad)
+        hesjan = self.get_hesjan(matrix_size)
+        for i in range(1, matrix_size+1):
+            if np.linalg.det(hesjan[0:i, 0:i]) <= 0:
+                return False
+        return True
+
+
+    def get_best_step_distance(self, direction, p, old_value, lower_bound=0, upper_bound=10, test_param=0.4, test_acc =1e-5, depth=50):
         mid_bound = (lower_bound+upper_bound)/2
-        new_val = self.calculate_function_value_in_point(self.function, self.point+mid_bound*direction)
-        if new_val < old_value + (1-test_param)*p*mid_bound and abs(new_val - old_value - (1-test_param)*p*mid_bound) > test_acc:
-            return self.get_best_step_distance(direction, p, old_value, mid_bound, upper_bound, test_param, test_acc)
-        if new_val > old_value + test_param*p*mid_bound and abs(new_val -old_value - test_param*p*mid_bound) > test_acc:
-            return self.get_best_step_distance(direction, p, old_value, lower_bound, mid_bound, test_param, test_acc)
+        lower = old_value + (1-test_param)*p*mid_bound
+        upper = old_value + test_param * p * mid_bound
+        new_val = self.calculate_function_value_in_point(self.function, self.point + mid_bound * direction)
+        if depth < 5:
+            if depth < 0:
+                return mid_bound
+        if new_val < lower and abs(new_val - lower) > test_acc:
+            return self.get_best_step_distance(direction, p, old_value, mid_bound, upper_bound, test_param, test_acc, depth - 1)
+        if new_val > upper and abs(new_val - upper) > test_acc:
+            return self.get_best_step_distance(direction, p, old_value, lower_bound, mid_bound, test_param, test_acc, depth-1)
+
         return mid_bound
 
     def find_minimum(self):
@@ -178,3 +200,10 @@ class Steepest_descent():
             #plt.show()
         else:
             print("This is not 3D object to plot")
+
+a = Steepest_descent(FUNCTION_STRINGS[1], POINTS[1])
+a.find_minimum()
+if a.check_if_in_min():
+    print("IT IS IN MIN!")
+else:
+    print("Not it min!")
