@@ -82,45 +82,43 @@ class Steepest_descent():
         return np.sqrt(np.float((vector.dot(vector))))
 
     def get_direction(self):
-        return np.array([self.calculate_function_value_in_point(self.grad[i], self.point) for i in range(len(self.grad))])
+        return np.array([-self.calculate_function_value_in_point(self.grad[i], self.point) for i in range(len(self.grad))])
 
-    def get_best_step_distance(self, direction, prev_val=1000, lower_bound=0, upper_bound=10, depth=30, epsilon=1e-4):
-        max_step = upper_bound - (GOLDEN_VALUE-1)*(upper_bound-lower_bound)
-        min_step = lower_bound + (GOLDEN_VALUE-1)*(upper_bound-lower_bound)
-        best_step_distance = max_step
+    def get_starting_TR(self, direction):
+        for i in [89, 55, 34, 21, 13, 8, 5, 3, 2, 1, 0.8, 0.5, 0.3, 0.2, 0.1, 0.02, 0.01]:
+            if self.calculate_function_value_in_point(self.function, self.point) > self.calculate_function_value_in_point(self.function, self.point+(direction*i)):
+                return i
+        return self.x_accuracy*2
 
-        f_val_1 = self.calculate_function_value_in_point(self.function, self.point-max_step*direction)
-        f_val_2 = self.calculate_function_value_in_point(self.function, self.point-min_step*direction)
-        if f_val_2 < f_val_1:
-            if(max_step > min_step):
-                upper_bound = max_step
-            else:
-                lower_bound = max_step
-        else:
-            if min_step > max_step:
-                upper_bound = min_step
-            else:
-                lower_bound = max_step
-        if abs(prev_val-best_step_distance) <= epsilon or depth < 0:
-            return best_step_distance
-        else:
-            return self.get_best_step_distance(direction, best_step_distance, lower_bound, upper_bound, depth-1, epsilon)
+    def get_best_step_distance(self, direction, p, old_value, lower_bound=0, upper_bound=10, test_param=0.4, test_acc =1e-10):
+        mid_bound = (lower_bound+upper_bound)/2
+        new_val = self.calculate_function_value_in_point(self.function, self.point+mid_bound*direction)
+        if new_val < old_value + (1-test_param)*p*mid_bound and abs(new_val - old_value - (1-test_param)*p*mid_bound) > test_acc:
+            return self.get_best_step_distance(direction, p, old_value, mid_bound, upper_bound, test_param, test_acc)
+        if new_val > old_value + test_param*p*mid_bound and abs(new_val -old_value - test_param*p*mid_bound) > test_acc:
+            return self.get_best_step_distance(direction, p, old_value, lower_bound, mid_bound, test_param, test_acc)
+        return mid_bound
 
     def find_minimum(self):
         direction = self.get_direction()
-        inf_loop_guardian = 0
         direction_magnitude = self.get_vector_length(direction)
+        inf_loop_guardian = 0
+
         while direction_magnitude > self.gradient_accuracy and inf_loop_guardian < self.max_iter:
-            step_distance = self.get_best_step_distance(direction, direction_magnitude)
-            self.point = self.point - direction*step_distance
+            upper_bound = self.get_starting_TR(direction)
+            p = -np.array(direction) @ np.array(direction).T
+            staring_f_value = self.calculate_function_value_in_point(self.function, self.point)
+            step_distance = self.get_best_step_distance(direction, p, staring_f_value, 0, upper_bound)
+            self.point = self.point + direction * step_distance
             if len(self.point) == 2:
                 self.path_x.append(self.point[0])
                 self.path_y.append(self.point[-1])
                 self.path_z.append(np.float(self.calculate_function_value_in_point(self.function, self.point)))
             direction = self.get_direction()
             direction_magnitude = self.get_vector_length(direction)
-            inf_loop_guardian=inf_loop_guardian+1
+            inf_loop_guardian = inf_loop_guardian + 1
         print(direction_magnitude)
+        print(self.point)
         return self.point
     
     def generate_plot(self, plot_size=6):
@@ -180,7 +178,3 @@ class Steepest_descent():
             #plt.show()
         else:
             print("This is not 3D object to plot")
-
-
-#a = Steepest_descent(FUNCTION_STRINGS[0], POINTS[0])
-#a.generate_plot(6)
