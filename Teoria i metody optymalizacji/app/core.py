@@ -57,6 +57,11 @@ class Steepest_descent():
         self.path_y = [self.point[-1]]
         self.path_z = [np.float(self.calculate_function_value_in_point(self.function, self.point))]
 
+        ##Data for TABLE:
+        self.x_points = [self.point]
+        self.function_values = [self.calculate_function_value_in_point(self.function, self.point)]
+        self.gradient_values = []
+
         self.function_accuracy = float(function_accuracy)
         self.x_accuracy = float(x_accuracy)
         self.gradient_accuracy = float(gradient_accuracy)
@@ -105,7 +110,6 @@ class Steepest_descent():
                 return False
         return True
 
-
     def get_best_step_distance(self, direction, p, old_value, lower_bound=0, upper_bound=10, test_param=0.4, test_acc =1e-5, depth=50):
         mid_bound = (lower_bound+upper_bound)/2
         lower = old_value + (1-test_param)*p*mid_bound
@@ -124,6 +128,7 @@ class Steepest_descent():
     def find_minimum(self):
         direction = self.get_direction()
         direction_magnitude = self.get_vector_length(direction)
+        self.gradient_values.append(direction_magnitude)
         inf_loop_guardian = 0
 
         while direction_magnitude > self.gradient_accuracy and inf_loop_guardian < self.max_iter:
@@ -136,9 +141,14 @@ class Steepest_descent():
                 self.path_x.append(self.point[0])
                 self.path_y.append(self.point[-1])
                 self.path_z.append(np.float(self.calculate_function_value_in_point(self.function, self.point)))
+
             direction = self.get_direction()
             direction_magnitude = self.get_vector_length(direction)
-            inf_loop_guardian = inf_loop_guardian + 1
+
+            self.x_points.append(self.point)
+            self.gradient_values.append(direction_magnitude)
+            self.function_values.append(self.path_z[-1])
+
         print(direction_magnitude)
         print(self.point)
         return self.point
@@ -200,10 +210,3 @@ class Steepest_descent():
             #plt.show()
         else:
             print("This is not 3D object to plot")
-
-a = Steepest_descent(FUNCTION_STRINGS[1], POINTS[1])
-a.find_minimum()
-if a.check_if_in_min():
-    print("IT IS IN MIN!")
-else:
-    print("Not it min!")
