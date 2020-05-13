@@ -99,6 +99,18 @@
                                 {{ form.point(class="form-control form-control-lg", placeholder="") }}
                             {% endif %}
                         </div>
+                         <div class="form-group">
+                            {{ form.plot_size.label(class="form-control-label ml-2") }}
+
+                            {% if form.plot_size.errors %}
+                                {{ form.plot_size(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid feedback">
+                                    <span>Pole powinno być liczbą naturalną dodatnią.</span>
+                                </div>
+                            {% else %}
+                                {{ form.plot_size(class="form-control form-control-lg", placeholder="") }}
+                            {% endif %}
+                        </div>
 
 
 

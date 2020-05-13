@@ -47,7 +47,7 @@ class Steepest_descent():
     None, it's instance of class.
     """
 
-    def __init__(self, equation, starting_point=0, function_accuracy=1e-3, x_accuracy=1e-3, gradient_accuracy=1e-3, number_of_iterations=5000):
+    def __init__(self, equation, starting_point=0, function_accuracy=1e-3, x_accuracy=1e-3, gradient_accuracy=1e-3, number_of_iterations=5000, plot_size=6):
 
         self.function = self.parse_equation(equation)
         self.point = np.array(starting_point) if starting_point else np.zeros((len(self.function.free_symbols), 1))
@@ -56,7 +56,7 @@ class Steepest_descent():
         self.path_x = [self.point[0]]
         self.path_y = [self.point[-1]]
         self.path_z = [np.float(self.calculate_function_value_in_point(self.function, self.point))]
-
+        self.plot_size = plot_size
         ##Data for TABLE:
         self.x_points = [self.point]
         self.function_values = [self.calculate_function_value_in_point(self.function, self.point)]
@@ -107,8 +107,8 @@ class Steepest_descent():
         hesjan = self.get_hesjan(matrix_size)
         for i in range(1, matrix_size+1):
             if np.linalg.det(hesjan[0:i, 0:i]) <= 0:
-                return False
-        return True
+                return "Nie"
+        return "Tak"
 
     def get_best_step_distance(self, direction, p, old_value, lower_bound=0, upper_bound=10, test_param=0.4, test_acc =1e-5, depth=50):
         mid_bound = (lower_bound+upper_bound)/2
@@ -132,6 +132,7 @@ class Steepest_descent():
         inf_loop_guardian = 0
 
         while direction_magnitude > self.gradient_accuracy and inf_loop_guardian < self.max_iter:
+            inf_loop_guardian=inf_loop_guardian+1
             upper_bound = self.get_starting_TR(direction)
             p = -np.array(direction) @ np.array(direction).T
             staring_f_value = self.calculate_function_value_in_point(self.function, self.point)
@@ -154,6 +155,7 @@ class Steepest_descent():
         return self.point
     
     def generate_plot(self, plot_size=6):
+        plot_size = int(self.plot_size) if int(self.plot_size) else plot_size
         if len(self.point) == 2:
             My_X, My_Y = np.meshgrid(range(10 * plot_size), range(10 * plot_size))
             My_X = (My_X - 5 * plot_size) / 5
@@ -209,4 +211,4 @@ class Steepest_descent():
             #return plt
             #plt.show()
         else:
-            print("This is not 3D object to plot")
+            return ["It's not 3D object", "It's not 3D object", "It's not 3D object"]

@@ -18,25 +18,31 @@ def main():
             data["function_accuracy"] = form.function_accuracy.data
             data["number_of_iterations"] = form.number_of_iterations.data
             data["equation"] = form.equation.data
+            data["plot_size"] = form.plot_size.data
             form.point.data = list(form.point.data.split(" "))
             numbers = []
-            for str in form.point.data:
-                numbers.append(float(str))
+            for val in form.point.data:
+                numbers.append(float(val))
             data["point"] = numbers
             data["min_factor"] = form.min_factor.data
 
-            algorithm = Steepest_descent(form.equation.data, data["point"])
+            algorithm = Steepest_descent(form.equation.data, data["point"], data["function_accuracy"],data["x_accuracy"], data["gradient_accuracy"],data["number_of_iterations"], data["plot_size"])
             data["parsed_equation"] = algorithm.function
             data["parsed_point"] = algorithm.point
             data["gradient"] = algorithm.grad
             data["value_in_point"] = algorithm.calculate_function_value_in_point(algorithm.function, algorithm.point)
             data["minimum"] = algorithm.find_minimum()
+            data["is_minimum"] = algorithm.check_if_in_min()
 
             plots = algorithm.generate_plot(6)
             data["plot1"] = plots[0]
             data["plot2"] = plots[1]
             data["plot3"] = plots[2]
-            
+
+            data["iterations"] = [i+1 for i in range(len(algorithm.x_points)-1)]
+            data["path"] = algorithm.x_points
+            data["gradients"] = algorithm.gradient_values
+            data["function_values"] = algorithm.function_values
             flash('Pomyślnie wykonano obliczenia!', 'success')
             return redirect(url_for('result'))
         except Exception as e:
@@ -77,10 +83,13 @@ def result():
 
     item = ['Minimum znalezione przez algorytm', nums]
     table_data.append(item)
+    item = ['Czy znaleziony punkt to minimum?', data["is_minimum"]]
+    table_data.append(item)
 
     img1 = data["plot1"]
     img2 = data["plot2"]
     img3 = data["plot3"]
-
-    return render_template('result.html', table_data=table_data, img1=img1, img2=img2, img3=img3, title='Wynik')
+    iterations_data = [data["iterations"], data["path"], data["gradients"], data["function_values"]]
+    return render_template('result.html', table_data=table_data, img1=img1, img2=img2, img3=img3, title='Wynik', iterations = data["iterations"],
+                           points = data["path"], gradients = data["gradients"], functions = data["function_values"])
 

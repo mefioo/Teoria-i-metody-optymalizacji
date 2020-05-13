@@ -30,6 +30,23 @@
         <div class="text-center">
             <a class="btn" href="javascript:history.back()" role="button">Edytuj poprzednie wartości</a>
         </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                  <th scope="col">Iteracja</th>
+                  <th scope="col">Punkt</th>
+                  <th scope="col">Wartość Funkcji</th>
+                  <th scope="col">Długość gradientu</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in iterations %}
+                    <tr>
+                        <td>{{ i }}</td><td>{{ points[i] }}</td><td>{{ "{:.5f}".format(functions[i]) }}</td><td>{{ "{:.5f}".format(gradients[i]) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <div class="col-xl-2 col-sm-2">
 
