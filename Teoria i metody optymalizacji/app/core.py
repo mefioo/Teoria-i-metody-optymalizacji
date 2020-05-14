@@ -47,7 +47,7 @@ class Steepest_descent():
     None, it's instance of class.
     """
 
-    def __init__(self, equation, starting_point=0, function_accuracy=1e-3, x_accuracy=1e-3, gradient_accuracy=1e-3, number_of_iterations=5000, plot_size=6):
+    def __init__(self, equation, starting_point=0, function_accuracy=1e-3, x_accuracy=1e-3, gradient_accuracy=1e-3, number_of_iterations=5000, plot_size=6, test_param=0.4):
 
         self.function = self.parse_equation(equation)
         self.point = np.array(starting_point) if starting_point else np.zeros((len(self.function.free_symbols), 1))
@@ -57,6 +57,7 @@ class Steepest_descent():
         self.path_y = [self.point[-1]]
         self.path_z = [np.float(self.calculate_function_value_in_point(self.function, self.point))]
         self.plot_size = plot_size
+        self.test_param = test_param
         ##Data for TABLE:
         self.x_points = [self.point]
         self.function_values = [self.calculate_function_value_in_point(self.function, self.point)]
@@ -136,7 +137,7 @@ class Steepest_descent():
             upper_bound = self.get_starting_TR(direction)
             p = -np.array(direction) @ np.array(direction).T
             staring_f_value = self.calculate_function_value_in_point(self.function, self.point)
-            step_distance = self.get_best_step_distance(direction, p, staring_f_value, 0, upper_bound)
+            step_distance = self.get_best_step_distance(direction, p, staring_f_value, 0, upper_bound, self.test_param)
             self.point = self.point + direction * step_distance
             if len(self.point) == 2:
                 self.path_x.append(self.point[0])

@@ -11,6 +11,6 @@ class InputData(FlaskForm):
                                                                                                        max=1000000)])
     equation = StringField('f(x) - funkcja *', validators=[DataRequired()])
     point = StringField('P - punkt startowy **', validators=[DataRequired()])
-    min_factor = FloatField('Parametr dla metody minimum', validators=[DataRequired(), NumberRange(min=0)])
+    min_factor = FloatField('Parametr dla metody minimum', validators=[DataRequired(), NumberRange(min=0, max=0.49)])
     plot_size = IntegerField('Zasięg wykresu wokół zera ***', validators=[NumberRange(min=1)])
     calculate = SubmitField('Znajdź minimum')

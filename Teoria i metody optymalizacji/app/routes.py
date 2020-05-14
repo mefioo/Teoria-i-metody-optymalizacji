@@ -31,7 +31,7 @@ def main():
             data["point"] = numbers
             data["min_factor"] = form.min_factor.data
 
-            algorithm = Steepest_descent(form.equation.data, data["point"], data["function_accuracy"],data["x_accuracy"], data["gradient_accuracy"],data["number_of_iterations"], data["plot_size"])
+            algorithm = Steepest_descent(form.equation.data, data["point"], data["function_accuracy"],data["x_accuracy"], data["gradient_accuracy"],data["number_of_iterations"], data["plot_size"], data["min_factor"])
             data["parsed_equation"] = algorithm.function
             data["parsed_point"] = algorithm.point
             data["gradient"] = algorithm.grad
