@@ -2,9 +2,14 @@ from app import app
 from flask import flash, url_for, redirect, render_template
 from app.forms import InputData
 from app.core import Steepest_descent
+import numpy as np
 
 
 data = {}
+
+
+def format_float(num):
+    return np.format_float_positional(num, trim='-')
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -54,31 +59,61 @@ def main():
 @app.route('/result')
 def result():
     table_data = []
+
+
+    ### Setting gradient accuracy
+    list = []
+    acc = len(str(format_float(data["gradient_accuracy"]))) - 2
+    for num in data["gradients"]:
+        list.append(str(format_float(round(num, acc))))
+    data["gradients"] = list
+    data["gradient_accuracy"] = format_float(data["gradient_accuracy"])
     item = ['Dokładność gradientu', data["gradient_accuracy"]]
     table_data.append(item)
+
+
+    ### Setting minimum accuracy
+    acc = len(str(format_float(data["x_accuracy"]))) - 2
+    nums = ''
+    for num in data["minimum"]:
+        nums = nums + str(round(num, acc)) + ", "
+    nums = nums[0:-2]
+
+    ### Setting x accuracy
+    list = []
+    acc = len(str(format_float(data["x_accuracy"]))) - 2
+    for line in data["path"]:
+        point = ''
+        list.append(point + str(round(line[0], acc)) + ', ' + str(round(line[1], acc)))
+    data["path"] = list
+    data["x_accuracy"] = format_float(data["x_accuracy"])
     item = ['Dokładność x', data["x_accuracy"]]
     table_data.append(item)
+
+    ### Setting function accuracy
+    list = []
+    acc = len(str(format_float(data["function_accuracy"]))) - 2
+    for num in data["function_values"]:
+        list.append(str(format_float(round(num, acc))))
+    data["function_values"] = list
+    data["function_accuracy"] = format_float(data["function_accuracy"])
     item = ['Dokładność funkcji', data["function_accuracy"]]
     table_data.append(item)
+
     item = ['Liczba iteracji', data["number_of_iterations"]]
     table_data.append(item)
     item = ['Funkcja', data["equation"]]
     table_data.append(item)
+    data["min_factor"] = format_float(data["min_factor"])
     item = ['Parametr dla metody minimum', data["min_factor"]]
     table_data.append(item)
 
-    ### Setting minimum accuracy
-    acc = len(str(data["x_accuracy"])) - 2
     point = ""
     for num in data["point"]:
-        point = point+str(num)+", "
+        point = point + str(num) + ", "
     point = point[0:-2]
     item = ['Punkt startowy', point]
     table_data.append(item)
-    nums = ''
-    for num in data["minimum"]:
-        nums = nums + str(round(num, acc)) + ", " #if
-    nums = nums[0:-2]
 
 
     item = ['Minimum znalezione przez algorytm', nums]
@@ -89,7 +124,7 @@ def result():
     img1 = data["plot1"]
     img2 = data["plot2"]
     img3 = data["plot3"]
-    iterations_data = [data["iterations"], data["path"], data["gradients"], data["function_values"]]
+
     return render_template('result.html', table_data=table_data, img1=img1, img2=img2, img3=img3, title='Wynik', iterations = data["iterations"],
-                           points = data["path"], gradients = data["gradients"], functions = data["function_values"])
+                           points=data["path"], gradients = data["gradients"], functions = data["function_values"])
 

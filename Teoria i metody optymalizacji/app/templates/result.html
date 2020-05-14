@@ -42,7 +42,7 @@
             <tbody>
                 {% for i in iterations %}
                     <tr>
-                        <td>{{ i }}</td><td>{{ points[i] }}</td><td>{{ "{:.5f}".format(functions[i]) }}</td><td>{{ "{:.5f}".format(gradients[i]) }}</td>
+                        <td>{{ i }}</td><td>{{ points[i] }}</td><td>{{ functions[i] }}</td><td>{{ gradients[i] }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
