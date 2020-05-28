@@ -111,7 +111,7 @@ class Steepest_descent():
                 return "Nie"
         return "Tak"
 
-    def get_best_step_distance(self, direction, p, old_value, lower_bound=0, upper_bound=10, test_param=0.4, test_acc =1e-5, depth=50):
+    def get_best_step_distance(self, direction, p, old_value, lower_bound=0, upper_bound=10, test_param=0.4, test_acc =1e-5, depth=20):
         mid_bound = (lower_bound+upper_bound)/2
         lower = old_value + (1-test_param)*p*mid_bound
         upper = old_value + test_param * p * mid_bound
@@ -132,7 +132,9 @@ class Steepest_descent():
         self.gradient_values.append(direction_magnitude)
         inf_loop_guardian = 0
 
-        while direction_magnitude > self.gradient_accuracy and inf_loop_guardian < self.max_iter:
+        while direction_magnitude > self.gradient_accuracy and inf_loop_guardian < self.max_iter :
+            if len(self.x_points) > 2 and self.get_vector_length(self.x_points[-1]-self.x_points[-2]) < self.x_accuracy**2:
+                break
             inf_loop_guardian=inf_loop_guardian+1
             upper_bound = self.get_starting_TR(direction)
             p = -np.array(direction) @ np.array(direction).T
@@ -149,7 +151,7 @@ class Steepest_descent():
 
             self.x_points.append(self.point)
             self.gradient_values.append(direction_magnitude)
-            self.function_values.append(self.path_z[-1])
+            self.function_values.append(self.calculate_function_value_in_point(self.function, self.point))
 
         print(direction_magnitude)
         print(self.point)

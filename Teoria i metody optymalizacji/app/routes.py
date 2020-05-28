@@ -84,7 +84,9 @@ def result():
     acc = len(str(format_float(data["x_accuracy"]))) - 2
     for line in data["path"]:
         point = ''
-        list.append(point + str(round(line[0], acc)) + ', ' + str(round(line[1], acc)))
+        for my_x in line:
+            point = point + str(round(my_x, acc)) + ', '
+        list.append(point[:-2])
     data["path"] = list
     data["x_accuracy"] = format_float(data["x_accuracy"])
     item = ['Dokładność x', data["x_accuracy"]]
