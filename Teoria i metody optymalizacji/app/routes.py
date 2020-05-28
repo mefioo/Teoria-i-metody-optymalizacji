@@ -37,7 +37,7 @@ def main():
             data["gradient"] = algorithm.grad
             data["value_in_point"] = algorithm.calculate_function_value_in_point(algorithm.function, algorithm.point)
             data["minimum"] = algorithm.find_minimum()
-            data["is_minimum"] = algorithm.check_if_in_min()
+            data["is_minimum"] = algorithm.check_if_in_min() + ', sprawdź hesjan'
 
             plots = algorithm.generate_plot(6)
             data["plot1"] = plots[0]

@@ -203,9 +203,6 @@ class Steepest_descent():
             fig.savefig(buf, format="png")
             img3 = base64.b64encode(buf.getbuffer()).decode("ascii")
 
-
-
-
             img = [img1, img2, img3]
 
             return img
