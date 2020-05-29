@@ -96,7 +96,7 @@ def result():
     list = []
     acc = len(str(format_float(data["function_accuracy"]))) - 2
     for num in data["function_values"]:
-        list.append(str(format_float(round(num, acc))))
+        list.append(str(round(num, acc)))
     data["function_values"] = list
     data["function_accuracy"] = format_float(data["function_accuracy"])
     item = ['Dokładność funkcji', data["function_accuracy"]]
